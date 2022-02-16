@@ -5,7 +5,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  <<<<<<< ui/card
   background-color: #b9b8b8b7;
+  =======
+  >>>>>>> master
 }
 
 code {
