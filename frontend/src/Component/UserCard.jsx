@@ -12,6 +12,8 @@ import {
 } from '@material-ui/core';
 import CallIcon from '@material-ui/icons/Call';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import { Link } from 'react-router-dom';
+import { getUsers, deleteUser } from '../Service/api';
 
 const useStyles = makeStyles({
   root: {
@@ -57,10 +59,23 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     marginTop: '1rem',
   },
+  flex: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 });
 
-function UserCard({ name, lat, long, phone }) {
+function UserCard({ id, name, lat, long, phone, setUsers }) {
   const classes = useStyles();
+  const deleteUserData = async (id) => {
+    await deleteUser(id);
+    getAllUsers();
+  };
+  const getAllUsers = async () => {
+    let response = await getUsers();
+    setUsers(response.data);
+  };
   return (
     <div className={classes.root}>
       <Typography className={classes.name} align="center" variant="h4">
@@ -80,6 +95,23 @@ function UserCard({ name, lat, long, phone }) {
         <CallIcon />
         {phone}
       </Typography>
+      <div className={classes.flex}>
+        <Button
+          color="primary"
+          variant="contained"
+          component={Link}
+          to={`/edit/${id}`}
+        >
+          Edit
+        </Button>
+        <Button
+          color="secondary"
+          variant="contained"
+          onClick={() => deleteUserData(id)}
+        >
+          Delete
+        </Button>
+      </div>
     </div>
   );
 }

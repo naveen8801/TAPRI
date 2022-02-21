@@ -46,10 +46,12 @@ const AllUsers = () => {
     <Container className={classes.root}>
       {users.map((item, index) => (
         <UserCard
+          id={item._id}
           name={item.name}
           lat={item.lat}
           long={item.lng}
           phone={item.phone}
+          setUsers={setUsers}
         />
       ))}
     </Container>
