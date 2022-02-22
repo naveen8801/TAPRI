@@ -44,7 +44,7 @@ const AllUsers = () => {
 
   return (
     <Container className={classes.root}>
-      {users.map((item, index) => (
+      {users.map((item) => (
         <UserCard
           id={item._id}
           name={item.name}
