@@ -5,13 +5,29 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  <<<<<<< ui/card
+
   background-color: #b9b8b8b7;
-  =======
-  >>>>>>> master
+
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+
+.Food-stall-icon{
+  font-size: 2rem;
+  color:black;
 }
+.map{
+  width: auto;
+  height: auto;
+  position: relative;
+}
+.Tea-stall-icon{
+  font-size: 2rem;
+  color:cadetblue;
+}
+.Grocery-shop-icon{
+  font-size: 2rem;
+  color:orange
+}
+
+
+
