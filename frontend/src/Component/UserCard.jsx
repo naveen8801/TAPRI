@@ -14,6 +14,7 @@ import CallIcon from '@material-ui/icons/Call';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { Link } from 'react-router-dom';
 import { getUsers, deleteUser } from '../Service/api';
+import EditDetailModal from './EditDetailModal';
 
 const useStyles = makeStyles({
   root: {
@@ -66,7 +67,8 @@ const useStyles = makeStyles({
   },
 });
 
-function UserCard({ id, name, lat, long, phone, setUsers }) {
+function UserCard({ id, name, lat, lng, phone, setUsers, category }) {
+  const [showEditModal, setShowEditModal] = useState(false);
   const classes = useStyles();
   const deleteUserData = async (id) => {
     await deleteUser(id);
@@ -85,8 +87,9 @@ function UserCard({ id, name, lat, long, phone, setUsers }) {
         <Button
           color="primary"
           variant="contained"
-          component={Link}
-          to={`/edit/${id}`}
+          // component={Link}
+          onClick={() => setShowEditModal(true)}
+          // to={`/edit/${id}`}
         >
           Edit
         </Button>
@@ -98,6 +101,19 @@ function UserCard({ id, name, lat, long, phone, setUsers }) {
           Delete
         </Button>
       </div>
+      <EditDetailModal
+        show={showEditModal}
+        setShow={setShowEditModal}
+        setUsers={setUsers}
+        userid={id}
+        user={{
+          name: name,
+          lat: lat,
+          lng: lng,
+          phone: phone,
+          category: category,
+        }}
+      />
     </div>
   );
 }
