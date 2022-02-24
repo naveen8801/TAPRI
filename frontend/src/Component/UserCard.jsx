@@ -9,6 +9,11 @@ import {
   Typography,
   TextField,
   Grid,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  DialogTitle,
 } from '@material-ui/core';
 import CallIcon from '@material-ui/icons/Call';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
@@ -33,6 +38,13 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'column',
+  },
+  heading: {
+    margin: '1rem',
+    fontFamily: 'Sora',
+    fontWeight: '600',
+    color: 'black',
+    textAlign: 'center',
   },
   name: {
     margin: '0px',
@@ -69,10 +81,15 @@ const useStyles = makeStyles({
 
 function UserCard({ id, name, lat, lng, phone, setUsers, category }) {
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteDialog, setshowDeleteDialog] = useState(false);
+  const [loading, setloading] = useState(false);
+
   const classes = useStyles();
   const deleteUserData = async (id) => {
+    setloading(true);
     await deleteUser(id);
-    getAllUsers();
+    await getAllUsers();
+    setloading(false);
   };
   const getAllUsers = async () => {
     let response = await getUsers();
@@ -96,7 +113,7 @@ function UserCard({ id, name, lat, lng, phone, setUsers, category }) {
         <Button
           color="secondary"
           variant="contained"
-          onClick={() => deleteUserData(id)}
+          onClick={() => setshowDeleteDialog(true)}
         >
           Delete
         </Button>
@@ -114,6 +131,38 @@ function UserCard({ id, name, lat, lng, phone, setUsers, category }) {
           category: category,
         }}
       />
+      <Dialog
+        open={showDeleteDialog}
+        onClose={() => setshowDeleteDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <Typography className={classes.heading} align="center" variant="h6">
+          Are you sure, you want to remove this user ?
+        </Typography>
+        <DialogContent></DialogContent>
+        <DialogActions>
+          <Button
+            disabled={loading}
+            variant="contained"
+            onClick={() => {
+              deleteUserData(id);
+              setshowDeleteDialog(false);
+            }}
+            color="primary"
+          >
+            Continue
+          </Button>
+          <Button
+            disabled={loading}
+            onClick={() => setshowDeleteDialog(false)}
+            color="secondary"
+            variant="contained"
+          >
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
