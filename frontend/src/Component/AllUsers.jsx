@@ -21,6 +21,9 @@ const useStyles = makeStyles({
     height: '100%',
     display: 'flex',
     marginTop: '1rem',
+    flexWrap: 'wrap',
+    padding: '1rem',
+    justifyContent: 'center',
   },
 });
 
@@ -43,7 +46,7 @@ const AllUsers = () => {
   };
 
   return (
-    <Container className={classes.root}>
+    <div className={classes.root}>
       {users.map((item) => (
         <UserCard
           id={item._id}
@@ -54,7 +57,7 @@ const AllUsers = () => {
           setUsers={setUsers}
         />
       ))}
-    </Container>
+    </div>
   );
 };
 

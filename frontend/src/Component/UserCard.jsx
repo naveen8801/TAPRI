@@ -17,13 +17,13 @@ import { getUsers, deleteUser } from '../Service/api';
 
 const useStyles = makeStyles({
   root: {
-    width: '270px',
+    width: '240px',
     border: '1px solid rgba(0, 0, 0, 0.1)',
     transition: '0.4s all',
     borderRadius: '7px',
     padding: '10px 20px 20px',
     backgroundColor: 'white ',
-    height: '250px',
+    height: '130px',
     margin: '1rem',
     '&:hover': {
       boxShadow: '1px 3px 5px 2px rgba(0, 0, 0, 0.11)',
@@ -80,20 +80,6 @@ function UserCard({ id, name, lat, long, phone, setUsers }) {
     <div className={classes.root}>
       <Typography className={classes.name} align="center" variant="h4">
         {name}
-      </Typography>
-      <Typography className={classes.longlat} align="center" variant="h4">
-        <LocationOnIcon />
-        <strong>Long -</strong> {long}
-        <br />
-      </Typography>
-      <Typography className={classes.longlat} align="center" variant="h4">
-        <LocationOnIcon />
-        <strong> Lat - </strong>
-        {lat}
-      </Typography>
-      <Typography className={classes.phone} align="center" variant="h4">
-        <CallIcon />
-        {phone}
       </Typography>
       <div className={classes.flex}>
         <Button
