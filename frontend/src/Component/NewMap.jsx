@@ -163,6 +163,7 @@ function NewMap() {
               ))}
             {overlay.show ? (
               <Overlay
+                offset={[100, -29]}
                 anchor={[parseFloat(overlay.lat), parseFloat(overlay.lng)]}
               >
                 <Card className={classes.overlayCard}>
