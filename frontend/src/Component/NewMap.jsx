@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Map, Marker, ZoomControl, Overlay } from 'pigeon-maps';
-import { makeStyles, Card } from '@material-ui/core';
+import { makeStyles, Card, Typography } from '@material-ui/core';
 import FoodStallsMarker from './FoodStallsMarker';
 import { getUsers } from '../Service/api';
 import TeaStallsMarker from './TeaStallMarker';
 import GroceryShopsMarker from './GroceryShopMarker';
 import LocationInfo from './LocationInfo';
 import turfBbox from '@turf/bbox';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 import {
   featureCollection as turfFeatureCollection,
   point as turfPoint,
 } from '@turf/helpers';
 import geoViewport from '@mapbox/geo-viewport';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -24,12 +26,34 @@ const useStyles = makeStyles({
     width: '100%',
     height: '100%',
   },
+  overlayCard: {
+    padding: '1rem',
+    minWidth: '150px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  overlaySubDiv: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dirText: {
+    fontSize: '13px',
+    color: 'blue',
+    '&:hover': {
+      cursor: 'pointer',
+      textDecoration: 'underline',
+    },
+  },
 });
 
 function NewMap() {
   const classes = useStyles();
   const [users, setUsers] = useState([]);
-  const [overlay, setOverlay] = useState([]);
+  const [overlay, setOverlay] = useState({ show: false, lat: 0.0, lng: 0.0 });
   const [defCenter, setDefCenter] = useState([22.5745, 88.4338]);
   const [defZoom, setDefZoom] = useState(18);
 
@@ -71,17 +95,27 @@ function NewMap() {
           };
           tmp.push(obj);
         });
-        tmp.push({
-          lat: 30.139889,
-          lng: 77.288433,
-        });
         setUsers(tmp);
       }
     } catch (err) {
       console.log(err);
     }
   };
-  console.log(defZoom);
+
+  const handleMarkerClick = (i) => {
+    let tmp = {
+      show: true,
+      lat: i.lat,
+      lng: i.lng,
+      name: i.name,
+    };
+    setOverlay(tmp);
+  };
+
+  const generateDirectionLink = (lat, lng) => {
+    return `http://maps.google.com/maps?q=${lat},${lng}`;
+  };
+
   return (
     <Card className={classes.root}>
       <div className={classes.subMapDiv}>
@@ -107,18 +141,37 @@ function NewMap() {
                   key={index}
                   width={30}
                   anchor={[parseFloat(i.lat), parseFloat(i.lng)]}
-                  // onClick={() => setDetails(index)}
+                  onClick={() => handleMarkerClick(i)}
                 />
               ))}
-            {/* <Overlay
-              anchor={
-                users.length > 0
-                  ? [users[1].lat, users[1].lng]
-                  : [22.5745, 88.4338]
-              }
-            >
-              <Card>I am here</Card>
-            </Overlay> */}
+            {overlay.show ? (
+              <Overlay
+                anchor={[parseFloat(overlay.lat), parseFloat(overlay.lng)]}
+              >
+                <Card className={classes.overlayCard}>
+                  <Typography style={{ fontSize: '17px' }} variant="h6">
+                    {overlay.name ? overlay.name : 'Unnamed'}
+                  </Typography>
+                  <div className={classes.overlaySubDiv}>
+                    <LocationOnIcon fontSize="17px" />
+                    <Link
+                      style={{ textDecoration: 'none' }}
+                      to={{
+                        pathname: generateDirectionLink(
+                          overlay.lat,
+                          overlay.lng
+                        ),
+                      }}
+                      target="_blank"
+                    >
+                      <Typography className={classes.dirText} variant="h6">
+                        View Directions
+                      </Typography>
+                    </Link>
+                  </div>
+                </Card>
+              </Overlay>
+            ) : null}
           </Map>
         ) : (
           'Nothing to Show'
