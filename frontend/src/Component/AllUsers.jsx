@@ -52,9 +52,10 @@ const AllUsers = () => {
           id={item._id}
           name={item.name}
           lat={item.lat}
-          long={item.lng}
+          lng={item.lng}
           phone={item.phone}
           setUsers={setUsers}
+          category={item.category}
         />
       ))}
     </div>
