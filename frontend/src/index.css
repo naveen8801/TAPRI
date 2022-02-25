@@ -29,5 +29,25 @@ body {
   color:orange
 }
 
-
-
+.Loaction-info{
+  position: absolute;
+  top:100px;
+  right: 100px;
+  width: 350px;
+  min-height: 100px;
+  padding: 20px;
+  background-color: rgba(0,0, 0, 0.6);
+  border-radius: 10px;
+  font-size: 18px;
+  color: white;
+}
+.Loaction-info ul{
+  list-style-type: none;
+  padding: 0;
+}
+.button-direction{
+ background-color: rgb(5, 168, 233);
+ border-radius: 2rem;
+ box-shadow: 0.5em;
+ text-decoration-color: aliceblue;
+}

@@ -5,9 +5,11 @@ import FoodStallsMarker from './FoodStallsMarker';
 import { getUsers } from '../Service/api';
 import TeaStallsMarker from './TeaStallMarker';
 import GroceryShopsMarker from './GroceryShopMarker';
-
+import LocationInfo from './LocationInfo';
 
 const Map = ({ center, zoom }) => {
+
+  const[locationinfo,setLocationinfo]=useState(null);
   const [users, setUsers] = useState([]);
   useEffect(() => {
     getAllUsers();
@@ -18,20 +20,21 @@ const Map = ({ center, zoom }) => {
   };
   const marker=(users.map(ev=>{
      if(ev.category=== 'FOOD'){
-     return  <FoodStallsMarker lat={ev.lat} lng={ev.lng}/>
+     return  <FoodStallsMarker lat={ev.lat} lng={ev.lng} onClick={()=> setLocationinfo({Name:ev.name,Phone:ev.phone})}/>
      }
      if(ev.category=== 'TEA')
      {
-       return <TeaStallsMarker lat={ev.lat} lng={ev.lng}/>
+       return <TeaStallsMarker lat={ev.lat} lng={ev.lng} onClick={()=> setLocationinfo({Name:ev.name,Phone:ev.phone})}/>
      }
      if(ev.category === 'GROCERY')
      {
-       return <GroceryShopsMarker lat={ev.lat} lng={ev.lng}/>
+       return <GroceryShopsMarker lat={ev.lat} lng={ev.lng} onClick={()=> setLocationinfo({Name:ev.name,Phone:ev.phone})}/>
      }
+     
   }))
   return (
 
-    <div style={{ height: '100vh', width: '100%', position: "relative" }}>
+    <div style={{ height: '100vh', width: '100vw', position: "relative" }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: "" }}
         defaultCenter={center}
@@ -40,6 +43,7 @@ const Map = ({ center, zoom }) => {
         {marker}
        
       </GoogleMapReact>
+      {locationinfo && <LocationInfo info={locationinfo}></LocationInfo>}
     </div>
   );
 }
