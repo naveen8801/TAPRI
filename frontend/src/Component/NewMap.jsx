@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Map, Marker, ZoomControl, Overlay } from 'pigeon-maps';
 import { makeStyles, Card, Typography } from '@material-ui/core';
 import FoodStallsMarker from './FoodStallsMarker';
@@ -48,6 +48,11 @@ const useStyles = makeStyles({
       textDecoration: 'underline',
     },
   },
+  markerOverlay: {
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
 });
 
 function NewMap() {
@@ -92,6 +97,7 @@ function NewMap() {
             name: i.name,
             lng: i.lng,
             lat: i.lat,
+            category: i.category,
           };
           tmp.push(obj);
         });
@@ -109,11 +115,20 @@ function NewMap() {
       lng: i.lng,
       name: i.name,
     };
+    console.log('in');
     setOverlay(tmp);
   };
 
   const generateDirectionLink = (lat, lng) => {
     return `http://maps.google.com/maps?q=${lat},${lng}`;
+  };
+
+  const returnMarkerImage = (i) => {
+    if (i.category === 'TEA' || i.category === 'FOOD') {
+      return <FoodStallsMarker />;
+    } else if (i.category === 'GROCERY') {
+      return <GroceryShopsMarker />;
+    }
   };
 
   return (
@@ -136,13 +151,15 @@ function NewMap() {
             <ZoomControl />
             {users.length > 0 &&
               users.map((i, index) => (
-                <Marker
-                  color="#22577A"
+                <Overlay
+                  className={classes.markerOverlay}
                   key={index}
-                  width={30}
                   anchor={[parseFloat(i.lat), parseFloat(i.lng)]}
-                  onClick={() => handleMarkerClick(i)}
-                />
+                >
+                  <div onClick={() => handleMarkerClick(i)}>
+                    {returnMarkerImage(i)}
+                  </div>
+                </Overlay>
               ))}
             {overlay.show ? (
               <Overlay
