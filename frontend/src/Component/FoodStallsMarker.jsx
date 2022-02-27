@@ -3,7 +3,7 @@ import foodstallmaker from '@iconify/icons-mdi/letter-f-box-outline'
 
 const FoodStallsMarker = ({lat,lng,onClick}) => {
   return (
-    <div className='Food-stalls-marker' onClick={onClick}>
+    <div className='Food-stalls-marker'>
          <Icon icon={foodstallmaker} className="Food-stall-icon"/>
     </div>
   )
